@@ -6,28 +6,42 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STRLEN 2048
-
 int
 main(int argc, char *argv[])
 {
-	int len;
-	char line[STRLEN];
-
-	line[0] = '\0'; /* init array for clean strcat */
+	int i;
+	size_t len;
+	char *buf, *ptr;
 
 	if (argc < 2) {
 		printf("\n");
 		exit(0);
 	}
-	while (*++argv) {
-		strcat(line, *argv);
-		strcat(line, " ");
-	}
-	len = strlen(line);
-	line[len-1] = '\n'; /* replace last space with nline */
 
-	printf("%s", line);
+	len = 1;
+	for (i = 1; i < argc; i++)
+		len += strlen(argv[i])+1;
+
+	buf = malloc(len);
+	if (buf == NULL) {
+		fprintf(stderr, "techo: malloc error\n");
+		exit(-1);
+	}
+
+	ptr = buf;
+	for (i = 1; i < argc; i++) {
+		strcpy(ptr, argv[i]);
+		ptr += strlen(ptr);
+		if (i < argc-1)
+			*ptr++ = ' ';
+	}
+
+	*ptr++ = '\n';
+	*ptr = '\0';
+
+	printf("%s", buf);
+
+	free(buf);
 
 	exit(0);
 }
