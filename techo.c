@@ -15,7 +15,7 @@ main(int argc, char *argv[])
 
 	if (argc < 2) {
 		printf("\n");
-		exit(0);
+		return 0;
 	}
 
 	len = 1;
@@ -25,7 +25,7 @@ main(int argc, char *argv[])
 	buf = malloc(len);
 	if (buf == NULL) {
 		fprintf(stderr, "techo: malloc error\n");
-		exit(-1);
+		return 1;
 	}
 
 	ptr = buf;
@@ -43,5 +43,5 @@ main(int argc, char *argv[])
 
 	free(buf);
 
-	exit(0);
+	return 0;
 }
